@@ -15,6 +15,30 @@
 - Read-after-write consistency
 
 ## Example
+- Postgres tables
+  - Postgres is the system-of-record
+  - Service receives commands from clients, validates them, records events, uses events to determine state changes
+  - This is essentially the Outbox Pattern
+  - Events table
+    - This is the full event log
+    - Each row is one event, with context
+  - State tables
+    - One table per unit of state
+    - State is some projection of events
+    - Could be completely recreated from all events
+    - Could be read during command validation, or to answer client queries
+  - Events and state tables are written in a single transaction
+    - State tables have read-after-write consistency with event log
+- Kafka topics
+  - Debezium produces a changelog topic for each table
+  - Events topic
+    - Contains one record per event
+    - Can be used for any event-sourcing purpose, e.g. update some materialized view (with eventual consistency)
+  - State topics
+    - One topic per state table
+    - One record per insert/update/delete to state table
+    - May be more useful to process state change topic, depending on use case
+    - Could enable compaction, and use to populate some other view
 
 ```
 #run all components:
