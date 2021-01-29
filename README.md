@@ -22,6 +22,7 @@
   - Events table
     - This is the full event log
     - Each row is one event, with context
+    - The event case class is serialized to json via circe, and stored in a `jsonb` column
   - State tables
     - One table per unit of state
     - State is some projection of events
