@@ -61,6 +61,8 @@ bin/kafka-console-consumer --bootstrap-server localhost:9092 --property print.ke
 
 ## Postgres
 
+This is an example of the service writing to both event and state tables in the same transaction.
+
 Connect to postgres0 using: `PGPASSWORD=postgres psql -h localhost -p 5432 -U postgres -d postgres`
 
 ```
@@ -74,6 +76,8 @@ COMMIT;
 ```
 
 ## Topic Records
+
+These are the row-level changes to Postgres tables that Debezium writes to Kafka, in Avro format.
 
 `settings_events`:
 
