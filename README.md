@@ -75,6 +75,27 @@ INSERT INTO display_settings VALUES ('7701a599-760f-4fc3-be32-513efb4b4b95', 'Do
 COMMIT;
 ```
 
+## Testing via `curl`
+
+```
+curl -v -X PUT \
+  -H "X-User-Id: f4ccfbdd-05da-4730-90ea-506978eb5287" \
+  -H "X-Tenant-Id: 7701a599-760f-4fc3-be32-513efb4b4b95" \
+  localhost:8080/tenants/7701a599-760f-4fc3-be32-513efb4b4b95/settings/display \
+  -d @- << EOF
+{
+  "tenantId": "7701a599-760f-4fc3-be32-513efb4b4b95",
+  "name": "Dog Waterproofing",
+  "description": "We waterproof dogs!"
+}
+EOF
+
+curl -s \
+  -H "X-User-Id: f4ccfbdd-05da-4730-90ea-506978eb5287" \
+  -H "X-Tenant-Id: 7701a599-760f-4fc3-be32-513efb4b4b95" \
+  localhost:8080/tenants/7701a599-760f-4fc3-be32-513efb4b4b95/settings/display | jq
+```
+
 ## Topic Records
 
 These are the row-level changes to Postgres tables that Debezium writes to Kafka, in Avro format.
