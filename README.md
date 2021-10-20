@@ -43,6 +43,7 @@
 
 ```
 #run all components:
+#WARNING: Be sure docker has at least 6GB of memory to run all of the pods!
 docker-compose up --build -d
 
 #verify everything is running using:
@@ -57,6 +58,12 @@ docker-compose ps
 bin/kafka-console-consumer --bootstrap-server localhost:9092 --property print.key=true --formatter io.confluent.kafka.formatter.AvroMessageFormatter --property schema.registry.url=http://localhost:8081 --topic postgres0.public.settings_events --from-beginning
 
 bin/kafka-console-consumer --bootstrap-server localhost:9092 --property print.key=true --formatter io.confluent.kafka.formatter.AvroMessageFormatter --property schema.registry.url=http://localhost:8081 --topic postgres0.public.display_settings --from-beginning
+
+#if you get ClassNotFoundExceptions from those commands about the AvroMessageFormmater, try these instead:
+
+bin/kafka-avro-console-consumer --bootstrap-server localhost:9092 --property print.key=true --property schema.registry.url=http://localhost:8081 --topic postgres0.public.settings_events --from-beginning
+
+bin/kafka-avro-console-consumer --bootstrap-server localhost:9092 --property print.key=true --property schema.registry.url=http://localhost:8081 --topic postgres0.public.display_settings --from-beginning
 ```
 
 ## Postgres
@@ -76,6 +83,13 @@ COMMIT;
 ```
 
 ## Testing via `curl`
+
+Before this test, we need to start an HTTP server for the endpoint:
+
+```
+cd settings
+sbt run
+```
 
 ```
 curl -v -X PUT \
